@@ -1,36 +1,20 @@
-skip_tags: true
+environment:
+  api_token:
+    secure: JzM3ABvKVujItxRGcbP0JaWZaNnNvtzN+vnt4qaZfBk=
+    
 shallow_clone: true
 
-# bumping new build
-environment:
-  my_secure_var:
-    secure: eIGiQCTlb68jxbPoBwujcisGGdwYu+ic1y/MRaGdNEY=
-
-#cache:
-#  - C:\Users\appveyor\AppData\Local\NuGet\Cache
-
 configuration: Release
- 
-# restore NuGet packages before running MSBuild
+
 before_build:
-  - echo %my_secure_var%
-  - nuget sources update -Name nuget.org -Source http://www.nuget.org/api/v2/
-  - nuget restore -Verbosity detailed
-  - ps: .\add-project-content.ps1 -csproj MyWebApp\MyWebApp.csproj -filesToAdd 'GeneratedContent\*.*'
- 
+- nuget restore
+
 # package Web Application project for Web Deploy
 build:
   verbosity: minimal
   publish_wap: true
 
-#test: off
+test: off
   
-#deploy:
-#  provider: WebDeploy
-#  server: https://waws-prod-bay-003.publish.azurewebsites.windows.net:443/msdeploy.axd?site=appveyor-test
-#  website: appveyor-test
-#  username: $appveyor-test
-#  password:
-#    secure: +yhXWVFWzQdV7MTtDycbwaiBIik4/7vf0YtdBTWcq5tBduCey6TkKMy5v9xSVA1t2hvHFySU7y+bsKD+QRdqSQ==
-#  ntlm: false
-#  remove_files: true
+deploy_script:
+- ps: Start-AppveyorBuild -ApiKey $env:api_token -ProjectSlug deploy-project -EnvironmentVariables @{ "deploy_version" = $env:appveyor_build_version }
