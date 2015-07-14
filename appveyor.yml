@@ -1,3 +1,4 @@
+os: Default Azure
 environment:
   api_token:
     secure: JzM3ABvKVujItxRGcbP0JaWZaNnNvtzN+vnt4qaZfBk=
