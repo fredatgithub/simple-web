@@ -16,5 +16,9 @@ build:
 
 test: off
   
-deploy_script:
-- ps: Start-AppveyorBuild -ApiKey $env:api_token -ProjectSlug deploy-project -EnvironmentVariables @{ "deploy_version" = $env:appveyor_build_version }
+#deploy_script:
+#- ps: Start-AppveyorBuild -ApiKey $env:api_token -ProjectSlug deploy-project -EnvironmentVariables @{ "deploy_version" = $env:appveyor_build_version }
+
+deploy:
+  provider: Environment
+  name: test agent azure
